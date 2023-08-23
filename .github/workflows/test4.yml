@@ -43,6 +43,10 @@ jobs:
         run: |
           docker run -d --name era-test-node -p 8011:8011 my-era-test-node
           sleep 10
+      - name: Check Docker container logs
+        run: |
+            docker ps
+            docker logs era-test-node
       - run: yarn test:fork
         env:
           ZKSYNC_PRIVATE_KEY: "0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110"
