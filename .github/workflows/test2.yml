@@ -18,16 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - uses: ./.github/actions/docker-image-cacher
 
       - name: Download and extract era-test-node binary
         run: |
-          wget https://github.com/matter-labs/era-test-node/releases/download/v0.1.0/era-test-node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
-          tar -xzf era-test-node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
+          wget https://github.com/matter-labs/era-test-node/releases/download/v0.1.0/era_test_node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
+          tar -xzf era_test_node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
 
       - name: Start era-test-node binary
         run: |
-          ./era-test-node & # Assuming this is the name of the binary after extraction
+          ./era_test_node & # Adjusted the binary name here as well
           sleep 10
 
       - run: yarn test:fork
@@ -36,4 +35,4 @@ jobs:
           ZKSYNC_WEB3_API_URL: "http://127.0.0.1:8011"
 
       - name: Stop era-test-node
-        run: pkill era-test-node
+        run: pkill era_test_node # Adjusted the binary name here as well
