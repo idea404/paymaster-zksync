@@ -27,7 +27,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup
-      - uses: ./.github/actions/docker-image-cacher
 
       - name: Start era-test-node
         run: |
