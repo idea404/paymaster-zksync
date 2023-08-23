@@ -1,0 +1,39 @@
+name: CI IM Node
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - run: yarn lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/docker-image-cacher
+
+      - name: Download and extract era-test-node binary
+        run: |
+          wget https://github.com/matter-labs/era-test-node/releases/download/v0.1.0/era-test-node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
+          tar -xzf era-test-node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
+
+      - name: Start era-test-node binary
+        run: |
+          ./era-test-node & # Assuming this is the name of the binary after extraction
+          sleep 10
+
+      - run: yarn test:fork
+        env:
+          ZKSYNC_PRIVATE_KEY: "0x7726827caac94a7f9e1b160f7ea819f172f7b6f9d2a97f992c38edeab82d4110"
+          ZKSYNC_WEB3_API_URL: "http://127.0.0.1:8011"
+
+      - name: Stop era-test-node
+        run: pkill era-test-node
