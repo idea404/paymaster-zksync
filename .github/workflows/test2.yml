@@ -24,9 +24,14 @@ jobs:
           wget https://github.com/matter-labs/era-test-node/releases/download/v0.1.0/era_test_node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
           tar -xzf era_test_node-v0.1.0-x86_64-unknown-linux-gnu.tar.gz
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libssl1.0.0
+
       - name: Start era-test-node binary
         run: |
-          ./era_test_node & # Adjusted the binary name here as well
+          ./era_test_node &
           sleep 10
 
       - run: yarn test:fork
@@ -35,4 +40,4 @@ jobs:
           ZKSYNC_WEB3_API_URL: "http://127.0.0.1:8011"
 
       - name: Stop era-test-node
-        run: pkill era_test_node # Adjusted the binary name here as well
+        run: pkill era_test_node
