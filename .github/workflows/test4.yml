@@ -1,4 +1,4 @@
-name: CI Docker Local
+name: CI Docker Local Binary
 
 on:
   push:
